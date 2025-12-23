@@ -4,7 +4,7 @@ import type { HeaderProps } from './types';
 const Header: React.FC<HeaderProps> = ({ habitsCount, totalCompleted, percentage, month }) => {
   return (
     <div className="bg-gray-200 px-6 py-4 flex items-center justify-between">
-      <h1 className="text-3xl font-bold text-gray-700">{month}</h1>
+      <h1 className="text-3xl font-Nunito text-gray-700">{month}</h1>
       <div className="flex items-center gap-8">
         <div className="text-center">
           <div className="text-sm text-gray-600">Number of habits</div>

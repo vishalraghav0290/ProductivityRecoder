@@ -1,1 +1,8 @@
+/* Import Tailwind base (via postcss) and Nunito font from Google Fonts */
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap');
+
+/* Apply Nunito as the default font across the app */
+html, body, #root {
+	font-family: 'Nunito', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
