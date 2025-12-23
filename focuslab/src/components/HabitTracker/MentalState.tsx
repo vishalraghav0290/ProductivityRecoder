@@ -8,7 +8,7 @@ type Props = {
 
 const MentalState: React.FC<Props> = ({ moodData, motivationData }) => {
   return (
-    <div className="mt-8 border-t border-gray-300 pt-4">
+    <div className="flex flex-col mt-8 border-t border-gray-300 pt-4 gap-3">
       <div className="text-center font-bold mb-2">Mental State</div>
       <div className="flex text-xs">
         <div className="w-48 font-bold">Mood</div>
@@ -27,7 +27,7 @@ const MentalState: React.FC<Props> = ({ moodData, motivationData }) => {
         ))}
       </div>
 
-      <div className="mt-4">
+      <div className="flex mt-4">
         <ResponsiveContainer width="100%" height={150}>
           <AreaChart data={moodData.map((mood, i) => ({ day: i + 1, mood: mood ?? 0 }))}>
             <defs>

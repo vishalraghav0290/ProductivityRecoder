@@ -7,16 +7,16 @@ type Props = {
 
 const AnalysisSidebar: React.FC<Props> = ({ stats }) => {
   return (
-    <div className="w-64 bg-gray-50 p-4 border-l border-gray-300">
+    <div className="flex flex-col w-inherit bg-white p-4 border-l border-gray-300 rounded-[8px] mt-10">
       <h3 className="font-bold text-lg mb-4">Analysis</h3>
-      <div className="space-y-3">
+      <div className="flex flex-col gap-3">
         <div className="flex justify-between text-xs font-bold mb-2">
           <span>Goal</span>
           <span>Actual</span>
           <span>Progress</span>
         </div>
         {stats.habitStats.map((stat, i) => (
-          <div key={i} className="space-y-1">
+          <div key={i} className="flex flex-col gap-1">
             <div className="flex justify-between text-xs">
               <span>{stat.goal}</span>
               <span>{stat.actual}</span>

@@ -9,7 +9,7 @@ type Props = {
 
 const ProgressSummary: React.FC<Props> = ({ dailyProgress, habitData, daysInMonth }) => {
   return (
-    <div className="mt-4 border-t border-gray-300 pt-2">
+    <div className="flex flex-col mt-4 border-t border-gray-300 pt-2 gap-2">
       <div className="flex text-xs">
         <div className="w-48 font-bold">Progress</div>
         {dailyProgress.map((dp, i) => (

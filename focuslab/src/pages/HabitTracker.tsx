@@ -6,7 +6,8 @@ import {
   ProgressChart,
   MentalState,
   AnalysisSidebar,
-  EditModal
+  EditModal,
+  WeekSummary
 } from '../components/HabitTracker';
 import type { Habit, HabitData, Stats } from '../components/HabitTracker/types';
 
@@ -32,16 +33,16 @@ const HabitTracker: React.FC = () => {
   ];
 
   const defaultHabitData: HabitData = {
-    0: [1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1],
-    1: [1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,1,1,1,0,1,1,0,1,1,0,1,1,1,0],
-    2: [1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    3: [1,1,1,0,1,0,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    4: [1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    5: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    6: [1,1,1,1,0,0,0,1,0,1,1,1,1,1,1,1,1,0,0,0,1,0,0,1,0,1,1,1,1,1],
-    7: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,1,1,1,1,0],
-    8: [0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    9: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    0: [1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+    1: [1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0],
+    2: [1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    3: [1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    4: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    5: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    6: [1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1],
+    7: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0],
+    8: [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    9: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   };
 
   // Initialize from localStorage or use defaults
@@ -75,8 +76,8 @@ const HabitTracker: React.FC = () => {
     localStorage.setItem('habitTracker_data', JSON.stringify(habitData));
   }, [habitData]);
 
-  const moodData: Array<number | null> = [9,null,4,null,6,null,9,null,9,null,7,null,9,null,8,null,6,null,6,null,4,null,7,null,3,null,7,null,2,null,5];
-  const motivationData: Array<number | null> = [7,null,8,null,8,null,8,null,null,null,null,null,5,null,5,null,9,null,7,null,6,null,7,null,8,null,5,null,6,null,8];
+  const moodData: Array<number | null> = [9, null, 4, null, 6, null, 9, null, 9, null, 7, null, 9, null, 8, null, 6, null, 6, null, 4, null, 7, null, 3, null, 7, null, 2, null, 5];
+  const motivationData: Array<number | null> = [7, null, 8, null, 8, null, 8, null, null, null, null, null, 5, null, 5, null, 9, null, 7, null, 6, null, 7, null, 8, null, 5, null, 6, null, 8];
 
   const toggleHabit = (habitIndex: number, day: number) => {
     setHabitData(prev => {
@@ -132,10 +133,10 @@ const HabitTracker: React.FC = () => {
 
   const renderWeekHeader = (weekNum: number) => {
     const weeks = [
-      { label: 'Week 1', days: [1,2,3,4,5,6,7] },
-      { label: 'Week 2', days: [8,9,10,11,12,13,14] },
-      { label: 'Week 3', days: [15,16,17,18,19,20,21] },
-      { label: 'Week 4', days: [22,23,24,25,26,27,28] }
+      { label: 'Week 1', days: [1, 2, 3, 4, 5, 6, 7] },
+      { label: 'Week 2', days: [8, 9, 10, 11, 12, 13, 14] },
+      { label: 'Week 3', days: [15, 16, 17, 18, 19, 20, 21] },
+      { label: 'Week 4', days: [22, 23, 24, 25, 26, 27, 28] }
     ];
     return weeks[weekNum];
   };
@@ -193,8 +194,8 @@ const HabitTracker: React.FC = () => {
   // ---------------------------------------------------------------------
 
   return (
-    <div className="w-full min-h-screen bg-gray-100 p-4">
-      <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg">
+    <div className="flex  min-h-screen bg-gray-100 p-4 justify-center items-center ">
+      <div className="flex flex-col w-[95%] mx-auto bg-gray-100  shadow-lg rounded-4xl">
         <Header
           habitsCount={habits.length}
           totalCompleted={stats.totalCompleted}
@@ -202,27 +203,37 @@ const HabitTracker: React.FC = () => {
           month={monthName}
         />
 
-        <div className="flex">
-          <div className="flex-1 p-6">
-            <HabitsTable
-              habits={habits}
-              daysInMonth={daysInMonth}
-              getDayOfWeek={getDayOfWeek}
-              renderWeekHeader={renderWeekHeader}
-              habitData={habitData}
-              toggleHabit={toggleHabit}
-              onNameClick={onNameClick}
-              onNameDoubleClick={onNameDoubleClick}
-            />
+        <div className="tracker-flex">
+          <div className=" flex flex-col p-6 gap-4 bg-gray-100">
+            {/* week summary (visible on small screens) */}
+            <div className="flex w-full bg-white justify-center items-center rounded-2xl p-3">
+              <WeekSummary dailyProgress={stats.dailyProgress} />
+              <HabitsTable
+                habits={habits}
+                daysInMonth={daysInMonth}
+                getDayOfWeek={getDayOfWeek}
+                renderWeekHeader={renderWeekHeader}
+                habitData={habitData}
+                toggleHabit={toggleHabit}
+                onNameClick={onNameClick}
+                onNameDoubleClick={onNameDoubleClick}
+              />
+            </div>
 
-            <ProgressSummary dailyProgress={stats.dailyProgress} habitData={habitData} daysInMonth={daysInMonth} />
 
-            <ProgressChart dailyProgress={stats.dailyProgress} />
+            <div className="flex flex-col gap-4 rounded-3xl bg-white p-4">
+              <ProgressSummary dailyProgress={stats.dailyProgress} habitData={habitData} daysInMonth={daysInMonth} />
+              <ProgressChart dailyProgress={stats.dailyProgress} />
+            </div>
 
-            <MentalState moodData={moodData} motivationData={motivationData} />
+            <div className="flex flex-col gap-4 rounded-3xl bg-white p-4">
+              <MentalState moodData={moodData} motivationData={motivationData} />
+            </div>
           </div>
 
-          <AnalysisSidebar stats={stats} />
+          <div className=" w-[20%]">
+            <AnalysisSidebar stats={stats} />
+          </div>
         </div>
 
         <EditModal

@@ -1,4 +1,5 @@
 import React from 'react';
+import focus from '../../../public/focus.png';
 
 type Props = {
     breadcrumb?: string[];
@@ -20,15 +21,12 @@ const Navbar: React.FC<Props> = ({
     onNotificationClick
 }) => {
     return (
-        <div className="w-full px-6 py-4 bg-white shadow-sm rounded-md flex items-center justify-between">
+        <div className="w-full px-6 py-4 bg-white shadow-sm  flex items-center justify-between rounded-2xl">
             <div className="flex items-center gap-4">
                 {/* breadcrumb */}
                 <nav className="text-sm text-gray-500 flex items-center gap-2 select-none">
-                    <span className="text-gray-600">{breadcrumb[0]}</span>
-                    <svg className="w-4 h-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
-                        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="font-semibold text-gray-900">{title}</span>
+                    <img src={focus} alt="Focus Labs" className="h-8 w-auto" />
+                    <div className="font-Audiowide font-900 text-2xl">Focus Labs</div>
                 </nav>
             </div>
 

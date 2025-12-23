@@ -23,7 +23,7 @@ const HabitsTable: React.FC<Props> = ({
   onNameDoubleClick
 }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="flex flex-col overflow-x-auto">
       <table className="w-full border-collapse">
         <thead>
           <tr>

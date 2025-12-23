@@ -3,9 +3,11 @@ import HabitTracker from "./pages/HabitTracker";
 import Navbar from "./components/HabitTracker/navbar";
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <div className="flex flex-col w-full min-h-screen">
       <Navbar />
-      <HabitTracker />
+      <div className="flex-1">
+        <HabitTracker />
+      </div>
     </div>
   );
 }

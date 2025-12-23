@@ -6,3 +6,29 @@
 html, body, #root {
 	font-family: 'Nunito', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
+
+/* Tracker layout responsiveness using calc() for main/sidebar widths */
+.tracker-flex {
+	display: flex;
+	gap: 1rem;
+	align-items: flex-start;
+}
+.tracker-main {
+	/* subtract sidebar width (16rem) from full width */
+	width: calc(100% - 16rem);
+}
+.tracker-sidebar {
+	width: 16rem; /* fixed sidebar width */
+	flex-shrink: 0;
+}
+
+/* show week summary on small screens, hide desktop-specific week data */
+.week-summary { display: none; }
+.desktop-week-data { display: block; }
+
+@media (max-width: 1024px) {
+	.tracker-flex { flex-direction: column; }
+	.tracker-main, .tracker-sidebar { width: 100%; }
+	.week-summary { display: block; }
+	.desktop-week-data { display: none; }
+}

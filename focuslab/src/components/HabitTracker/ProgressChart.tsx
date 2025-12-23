@@ -8,7 +8,7 @@ type Props = {
 
 const ProgressChart: React.FC<Props> = ({ dailyProgress }) => {
   return (
-    <div className="mt-6">
+    <div className="flex mt-6">
       <ResponsiveContainer width="100%" height={150}>
         <AreaChart data={dailyProgress}>
           <defs>
