@@ -10,7 +10,7 @@ const userSchema = new Schema(
         password: { type: String, required: true },
         image : { type: String },
         refreshToken: { type: String },
-    }, { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } }
+    }, { timestamps: true }
 );
 
 
@@ -19,8 +19,10 @@ const userSchema = new Schema(
 userSchema.pre("save", async function (this: any, next: any) {
     if (!this.isModified('password')) return next();
     // hashing the password
+    console.log("hashing the password");
     const salt = await bcrypt.genSalt(10);
    this.password = await bcrypt.hash(this.password, salt);
+   console.log("hashed password is ", this.password);
     next();
 });
 

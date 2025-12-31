@@ -1,10 +1,11 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import Activity from '../db/schema/activity';
+import { authenticate } from '../middleware';
 
 const router = express.Router();
 
 // List activities (simple)
-router.get('/', async (req: Request, res: Response) => {
+router.get('/habbit', async (req: Request, res: Response) => {
   try {
     const activities = await Activity.find();
     res.json(activities);
@@ -14,7 +15,7 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 // Create activity
-router.post('/', async (req: Request, res: Response) => {
+router.post('/habbit', authenticate, async (req: Request, res: Response , next: NextFunction ) => {
   try {
     const { userId, name } = req.body as any;
     const activity = await Activity.create({ userId, name });

@@ -1,22 +1,32 @@
 // File: /Users/vishalraghav/Documents/focuslabProject/backend/src/controllers/index.ts
 
-const UserController = require('../db/schema/user');
-const ActivityController = require('../db/schema/activity');
-const SubActivityController = require('../db/schema/subActivity');
-const ActivityLogController = require('../db/schema/activityLog');
-const SubscriptionController = require('../db/schema/subscription');
-const PaymentController = require('../db/schema/payment');
-const TaskController = require('../db/schema/task');
-const AIProfileController = require('../db/schema/aiProfile');
+import UserController from '../db/schema/user';
+import ActivityController from '../db/schema/activity';
+import SubActivityController from '../db/schema/subActivity';
+import ActivityLogController from '../db/schema/activityLog';
+import SubscriptionController from '../db/schema/subscription';
+import PaymentController from '../db/schema/payment';
+import TaskController from '../db/schema/task';
+import AIProfileController from '../db/schema/aiProfile';
 
-// Exporting all controllers for use in routes
-module.exports = {
-    UserController,
-    ActivityController,
-    SubActivityController,
-    ActivityLogController,
-    SubscriptionController,
-    PaymentController,
-    TaskController,
-    AIProfileController,
+export {
+  UserController,
+  ActivityController,
+  SubActivityController,
+  ActivityLogController,
+  SubscriptionController,
+  PaymentController,
+  TaskController,
+  AIProfileController,
+};
+
+export default {
+  UserController,
+  ActivityController,
+  SubActivityController,
+  ActivityLogController,
+  SubscriptionController,
+  PaymentController,
+  TaskController,
+  AIProfileController,
 };
