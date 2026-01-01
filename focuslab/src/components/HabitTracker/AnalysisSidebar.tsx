@@ -7,7 +7,7 @@ type Props = {
 
 const AnalysisSidebar: React.FC<Props> = ({ stats }) => {
   return (
-    <div className="flex flex-col w-inherit bg-white p-4 border-l border-gray-300 rounded-[8px] mt-10">
+    <div className="flex flex-col w-inherit bg-white p-4 border-l border-gray-300 rounded-lg mt-10">
       <h3 className="font-bold text-lg mb-4">Analysis</h3>
       <div className="flex flex-col gap-3">
         <div className="flex justify-between text-xs font-bold mb-2">

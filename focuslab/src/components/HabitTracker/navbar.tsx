@@ -2,24 +2,31 @@ import React from 'react';
 import focus from '../../../public/focus.png';
 
 type Props = {
-    breadcrumb?: string[];
-    title?: string;
     userName?: string;
     userRole?: string;
     avatarUrl?: string;
     showNotification?: boolean;
     onNotificationClick?: () => void;
+    onLogout?: () => void;
 };
 
 const Navbar: React.FC<Props> = ({
-    breadcrumb = ['Vishal', 'Monthly Chart'],
-    title = 'Monthly Chart',
     userName = 'Vishal Raghav',
     userRole = 'Pro Member',
     avatarUrl,
     showNotification = true,
-    onNotificationClick
+    onNotificationClick,
+    onLogout
 }) => {
+    const handleLogout = () => {
+        if (onLogout) return onLogout();
+        try {
+            localStorage.removeItem('focuslab_current_user');
+        } catch (e) {
+            // ignore
+        }
+        window.location.href = '/';
+    };
     return (
         <div className="w-full px-6 py-4 bg-white shadow-sm  flex items-center justify-between rounded-2xl">
             <div className="flex items-center gap-4">
@@ -58,6 +65,7 @@ const Navbar: React.FC<Props> = ({
                         />
                         <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
                     </div>
+                    <button onClick={handleLogout} className="text-sm text-gray-600 hover:text-gray-900">Log out</button>
                 </div>
             </div>
         </div>
