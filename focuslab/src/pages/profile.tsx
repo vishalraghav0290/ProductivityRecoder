@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { BarChart3, CheckCircle, Flame, Clock, AlertTriangle, Target, CreditCard, Lock, Key, LogOut, AlertCircle, Trash2 } from 'lucide-react';
 
 export default function ProfilePage() {

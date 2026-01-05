@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import  { useRef, useState } from "react";
 
 type Habit = { id: number; name: string; icon: string; goal: number; };
 
