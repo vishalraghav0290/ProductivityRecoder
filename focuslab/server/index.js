@@ -1,12 +1,4 @@
-/**
- * Minimal Express server providing JWT-based auth endpoints for local development.
- * - POST /api/auth/signup   -> register a new user
- * - POST /api/auth/login    -> authenticate and receive { token, user }
- * - GET  /api/auth/me       -> returns user info when provided a valid Bearer token
- *
- * This is intentionally small and file-based. Replace the users.json persistence
- * with a proper database (Postgres, Mongo, etc.) in production.
- */
+
 
 import express from 'express';
 import fs from 'fs';

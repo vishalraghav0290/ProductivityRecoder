@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { loginUser } from '../../utils/auth';
 
@@ -17,6 +18,8 @@ export default function AuthPage() {
 
   // Handle login or signup by calling the backend auth endpoints. On success store
   // the issued JWT and minimal user info in localStorage using loginUser().
+  const navigate = useNavigate();
+
   const handleSubmit = async () => {
     const base = (import.meta.env.VITE_AUTH_URL as string) || 'http://localhost:4000';
     try {
@@ -28,10 +31,10 @@ export default function AuthPage() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data?.message || 'Login failed');
-        // store token and user info
-        loginUser(data.token, data.user);
-        // SPA navigation: navigate to home
-        window.location.href = '/';
+  // store token and user info
+  loginUser(data.token, data.user);
+  // SPA navigation: navigate to home (use react-router)
+  navigate('/');
       } else {
         // Signup
         if (formData.password !== formData.confirmPassword) {

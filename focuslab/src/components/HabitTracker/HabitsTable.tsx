@@ -1,4 +1,5 @@
 import React from 'react';
+import { Plus } from 'lucide-react';
 import type { Habit, HabitData } from './types';
 
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
   toggleHabit: (habitIndex: number, day: number) => void;
   onNameClick: (habitId: number) => void;
   onNameDoubleClick: (habitId: number) => void;
+    onAddHabit?: (name?: string) => void;
 };
 
 const HabitsTable: React.FC<Props> = ({
@@ -20,14 +22,35 @@ const HabitsTable: React.FC<Props> = ({
   habitData,
   toggleHabit,
   onNameClick,
-  onNameDoubleClick
+  onNameDoubleClick,
+  onAddHabit,
 }) => {
   return (
-    <div className="flex flex-col overflow-x-auto bg-amber-200">
+    <div className="flex flex-col overflow-x-auto bg-white">
       <table className="w-full border-collapse">
         <thead>
           <tr>
-            <th className="text-left p-2 font-bold bg-gray-100">My Habits</th>
+            <th className="text-left p-2 font-bold bg-gray-100">
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between">
+                  <span>My Habits</span>
+                   <div className="flex">
+                    <button
+                      aria-label="Add habit"
+                      onClick={() => {
+                        if (onAddHabit) onAddHabit();
+                        else alert('Add habit');
+                      }}
+                      className=" rounded-md hover:bg-gray-100 text-gray-600"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                </div>
+                </div>
+                
+              </div>
+            </th>
+            
             {[0, 1, 2, 3].map(weekNum => {
               const week = renderWeekHeader(weekNum);
               return (
@@ -41,6 +64,7 @@ const HabitsTable: React.FC<Props> = ({
             <th colSpan={2} className="text-center p-2 bg-gray-100 border-l border-gray-300"></th>
           </tr>
           <tr>
+           
             <th className="p-2 bg-gray-50"></th>
             {Array.from({ length: daysInMonth }).map((_, i) => (
               <th key={i} className="text-center text-xs p-1 bg-gray-50 border-l border-gray-200">

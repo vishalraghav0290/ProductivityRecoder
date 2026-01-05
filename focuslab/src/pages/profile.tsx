@@ -91,14 +91,14 @@ export default function ProfilePage() {
                 <div className="flex items-center justify-center sm:justify-start gap-2">
                   <span className="text-gray-500">Joined: {profileData.user.joinedDate}</span>
                   {profileData.user.isPro && (
-                    <span className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">Pro</span>
+                    <span className="bg-gray-500 text-white text-xs px-3 py-1 rounded-full">Pro</span>
                   )}
                 </div>
               </div>
             </div>
             <button 
               onClick={handleEditProfile}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium transition-colors whitespace-nowrap"
+              className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2.5 rounded-lg font-medium transition-colors whitespace-nowrap"
             >
               Edit Profile
             </button>
@@ -106,9 +106,9 @@ export default function ProfilePage() {
         </div>
 
         {/* Your Overall Progress */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-sm p-3 mb-3">
+        <div className="bg-gradient-to-br from-gray-50 to-indigo-50 rounded-xl shadow-sm p-3 mb-3">
           <div className="flex items-center gap-2 mb-6">
-            <BarChart3 className="text-blue-600" size={24} />
+            <BarChart3 className="text-gray-600" size={24} />
             <h3 className="text-xl font-bold text-gray-900">Your Overall Progress</h3>
           </div>
           
@@ -130,7 +130,7 @@ export default function ProfilePage() {
                 </div>
                 <button 
                   onClick={handleViewAnalytics}
-                  className="bg-blue-400 hover:bg-blue-500 text-white px-5 py-2.5 rounded-lg font-medium transition-colors w-full mt-2"
+                  className="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2.5 rounded-lg font-medium transition-colors w-full mt-2"
                 >
                   View Analytics
                 </button>
@@ -175,7 +175,7 @@ export default function ProfilePage() {
           {/* Goals & Preferences */}
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center gap-2 mb-5">
-              <Target className="text-blue-600" size={22} />
+              <Target className="text-gray-600" size={22} />
               <h3 className="text-lg font-bold text-gray-900">Goals & Preferences</h3>
             </div>
             <div className="space-y-4">
@@ -187,7 +187,7 @@ export default function ProfilePage() {
                 </div>
                 <button 
                   onClick={handleEditGoals}
-                  className="text-blue-500 hover:text-blue-600 font-medium text-sm"
+                  className="text-gray-500 hover:text-gray-600 font-medium text-sm"
                 >
                   Edit
                 </button>
@@ -204,7 +204,7 @@ export default function ProfilePage() {
           {/* Subscription & Billing */}
           <div className="bg-white rounded-xl shadow-sm px-6 py-6">
             <div className="flex items-center gap-2 mb-5">
-              <CreditCard className="text-blue-600" size={22} />
+              <CreditCard className="text-gray-600" size={22} />
               <h3 className="text-lg font-bold text-gray-900">Subscription & Billing</h3>
             </div>
             <div className="space-y-4">
@@ -217,13 +217,13 @@ export default function ProfilePage() {
               <div className="flex gap-3 pt-2">
                 <button 
                   onClick={handleViewPayments}
-                  className="text-gray-700 hover:text-blue-600 font-medium text-sm"
+                  className="text-gray-700 hover:text-gray-600 font-medium text-sm"
                 >
                   View Payments
                 </button>
                 <button 
                   onClick={handleUpgradeCancel}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
                   Upgrade / Cancel
                 </button>
@@ -234,20 +234,20 @@ export default function ProfilePage() {
           {/* Security */}
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center gap-2 mb-5">
-              <Lock className="text-blue-600" size={22} />
+              <Lock className="text-gray-600" size={22} />
               <h3 className="text-lg font-bold text-gray-900">Security</h3>
             </div>
             <div className="space-y-3">
               <button 
                 onClick={handleChangePassword}
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors w-full text-left"
+                className="flex items-center gap-3 text-gray-700 hover:text-gray-600 transition-colors w-full text-left"
               >
                 <Key size={20} className="flex-shrink-0" />
                 <span>Change Password</span>
               </button>
               <button 
                 onClick={handleLogoutAll}
-                className="flex items-center gap-3 text-gray-700 hover:text-blue-600 transition-colors w-full text-left"
+                className="flex items-center gap-3 text-gray-700 hover:text-gray-600 transition-colors w-full text-left"
               >
                 <LogOut size={20} className="flex-shrink-0" />
                 <span>Logout from all devices</span>
@@ -275,7 +275,7 @@ export default function ProfilePage() {
           {/* Goals & Preferences */}
           <div className="bg-white rounded-xl shadow-sm p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Target className="text-blue-600" size={20} />
+              <Target className="text-gray-600" size={20} />
               <h3 className="text-base font-bold text-gray-900">Goals & Preferences</h3>
             </div>
             <div className="space-y-3">
@@ -285,7 +285,7 @@ export default function ProfilePage() {
                 </span>
                 <button 
                   onClick={handleEditGoals}
-                  className="text-blue-500 hover:text-blue-600 font-medium text-sm"
+                  className="text-gray-500 hover:text-gray-600 font-medium text-sm"
                 >
                   Edit
                 </button>
@@ -302,7 +302,7 @@ export default function ProfilePage() {
           {/* Subscription & Billing */}
           <div className="bg-white rounded-xl shadow-sm p-5">
             <div className="flex items-center gap-2 mb-4">
-              <CreditCard className="text-blue-600" size={20} />
+              <CreditCard className="text-gray-600" size={20} />
               <h3 className="text-base font-bold text-gray-900">Subscription & Billing</h3>
             </div>
             <div className="space-y-3">
@@ -315,13 +315,13 @@ export default function ProfilePage() {
               <div className="flex gap-2 pt-1">
                 <button 
                   onClick={handleViewPayments}
-                  className="text-gray-700 hover:text-blue-600 font-medium text-sm"
+                  className="text-gray-700 hover:text-gray-600 font-medium text-sm"
                 >
                   View Payments
                 </button>
                 <button 
                   onClick={handleUpgradeCancel}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
                   Upgrade / Cancel
                 </button>
@@ -332,20 +332,20 @@ export default function ProfilePage() {
           {/* Security */}
           <div className="bg-white rounded-xl shadow-sm p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Lock className="text-blue-600" size={20} />
+              <Lock className="text-gray-600" size={20} />
               <h3 className="text-base font-bold text-gray-900">Security</h3>
             </div>
             <div className="space-y-3">
               <button 
                 onClick={handleChangePassword}
-                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors w-full text-left text-sm"
+                className="flex items-center gap-2 text-gray-700 hover:text-gray-600 transition-colors w-full text-left text-sm"
               >
                 <Key size={18} />
                 <span>Change Password</span>
               </button>
               <button 
                 onClick={handleLogoutAll}
-                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors w-full text-left text-sm"
+                className="flex items-center gap-2 text-gray-700 hover:text-gray-600 transition-colors w-full text-left text-sm"
               >
                 <LogOut size={18} />
                 <span>Logout from all devices</span>
@@ -371,7 +371,7 @@ export default function ProfilePage() {
           {/* Second Subscription & Billing */}
           <div className="bg-white rounded-xl shadow-sm p-5">
             <div className="flex items-center gap-2 mb-4">
-              <CreditCard className="text-blue-600" size={20} />
+              <CreditCard className="text-gray-600" size={20} />
               <h3 className="text-base font-bold text-gray-900">Subscription & Billing</h3>
             </div>
             <div className="space-y-3">
@@ -390,13 +390,13 @@ export default function ProfilePage() {
               <div className="flex gap-2 pt-1">
                 <button 
                   onClick={handleViewPayments}
-                  className="text-gray-700 hover:text-blue-600 font-medium text-sm"
+                  className="text-gray-700 hover:text-gray-600 font-medium text-sm"
                 >
                   View Payments
                 </button>
                 <button 
                   onClick={handleUpgradeCancel}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                 >
                   Upgrade / Cancel
                 </button>
@@ -407,20 +407,20 @@ export default function ProfilePage() {
           {/* Second Security */}
           <div className="bg-white rounded-xl shadow-sm p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Lock className="text-blue-600" size={20} />
+              <Lock className="text-gray-600" size={20} />
               <h3 className="text-base font-bold text-gray-900">Security</h3>
             </div>
             <div className="space-y-3">
               <button 
                 onClick={handleChangePassword}
-                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors w-full text-left text-sm"
+                className="flex items-center gap-2 text-gray-700 hover:text-gray-600 transition-colors w-full text-left text-sm"
               >
                 <Lock size={18} />
                 <span>Change Password</span>
               </button>
               <button 
                 onClick={handleLogoutAll}
-                className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors w-full text-left text-sm"
+                className="flex items-center gap-2 text-gray-700 hover:text-gray-600 transition-colors w-full text-left text-sm"
               >
                 <LogOut size={18} />
                 <span>Logout from all devices</span>

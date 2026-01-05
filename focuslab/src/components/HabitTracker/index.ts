@@ -6,3 +6,4 @@ export { default as MentalState } from './MentalState';
 export { default as AnalysisSidebar } from './AnalysisSidebar';
 export { default as EditModal } from './EditModal';
 export { default as WeekSummary } from './WeekSummary';
+export { default as AddHabitModal } from './AddHabitModal';

@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import HabitTracker from "./pages/HabitTracker";
 import Navbar from "./components/HabitTracker/navbar";
 import AuthPage from "./components/auth/AuthPage";
@@ -17,10 +17,12 @@ const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 const App: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    // Clear stored auth information and navigate to login page
+    // Clear stored auth information and navigate to login page (SPA navigation)
     logoutUser();
-    window.location.href = '/login';
+    navigate('/login');
   };
 
   return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import focus from '../../../public/focus.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { logoutUser } from '../../utils/auth';
 
 type Props = {
     userName?: string;
@@ -19,21 +20,24 @@ const Navbar: React.FC<Props> = ({
     onNotificationClick,
     onLogout
 }) => {
+    const navigate = useNavigate();
+
     const handleLogout = () => {
         if (onLogout) return onLogout();
         try {
-            localStorage.removeItem('focuslab_current_user');
+            // ensure token and user cleared
+            logoutUser();
         } catch (e) {
             // ignore
         }
-        window.location.href = '/';
+        navigate('/login');
     };
 
     return (
         <div className="w-full px-6 py-4 bg-white shadow-sm flex items-center justify-between rounded-2xl">
             <div className="flex items-center gap-4">
                 {/* breadcrumb */}
-                <nav className="text-sm text-gray-500 flex items-center gap-2 select-none">
+                <nav className="text-sm text-gray-500 flex items-center gap-2 select-none" onClick={() => navigate('/habbitable')}>
                     <img src={focus} alt="Focus Labs" className="h-8 w-auto" />
                     <div className="font-Audiowide font-900 text-2xl">Focus Labs</div>
                 </nav>

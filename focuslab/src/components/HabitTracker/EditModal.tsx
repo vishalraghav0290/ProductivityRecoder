@@ -5,10 +5,11 @@ type Props = {
   editValue: string;
   setEditValue: (v: string) => void;
   saveEdit: (id: number | null) => void;
+  deleteHabit: (id: number | null) => void;
   closeModal: () => void;
 };
 
-const EditModal: React.FC<Props> = ({ editingId, editValue, setEditValue, saveEdit, closeModal }) => {
+const EditModal: React.FC<Props> = ({ editingId, editValue, setEditValue, saveEdit, deleteHabit, closeModal }) => {
   if (editingId === null) return null;
 
   return (
@@ -26,9 +27,12 @@ const EditModal: React.FC<Props> = ({ editingId, editValue, setEditValue, saveEd
           }}
           autoFocus
         />
-        <div className="flex gap-2 justify-end">
-          <button onClick={() => saveEdit(editingId)} className="px-3 py-1 bg-green-500 text-white rounded">Save</button>
-          <button onClick={closeModal} className="px-3 py-1 bg-gray-300 rounded">Cancel</button>
+        <div className="flex gap-2 justify-end items-center">
+          <button onClick={() => deleteHabit(editingId)} className="px-3 py-1 bg-red-500 text-white rounded">Delete</button>
+          <div className="flex gap-2">
+            <button onClick={() => saveEdit(editingId)} className="px-3 py-1 bg-green-500 text-white rounded">Save</button>
+            <button onClick={closeModal} className="px-3 py-1 bg-gray-300 rounded">Cancel</button>
+          </div>
         </div>
       </div>
     </div>

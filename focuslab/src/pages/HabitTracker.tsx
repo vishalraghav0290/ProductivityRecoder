@@ -9,6 +9,7 @@ import {
   EditModal,
   WeekSummary
 } from '../components/HabitTracker';
+import { AddHabitModal } from '../components/HabitTracker';
 import type { Habit, HabitData, Stats } from '../components/HabitTracker/types';
 import habitStorage from '../utils/habitStorage';
 import { getCurrentUser } from '../utils/auth';
@@ -208,6 +209,61 @@ const HabitTracker: React.FC = () => {
     setEditValue('');
   };
 
+  const deleteHabit = (id: number | null) => {
+    if (id === null) return;
+    // Remove habit and rebuild habitData so indices remain contiguous
+    setHabits(prevHabits => {
+      const indexMap = new Map(prevHabits.map((h, i) => [h.id, i]));
+      const updated = prevHabits.filter(h => h.id !== id);
+
+      // rebuild habitData using previous data rows copied to new indices
+      setHabitData(prevData => {
+        const newData: HabitData = {};
+        updated.forEach((h, newIndex) => {
+          const oldIndex = indexMap.get(h.id)!;
+          newData[newIndex] = prevData[oldIndex] ?? new Array<number>(daysInMonth).fill(0);
+        });
+        // persist immediately
+        habitStorage.saveHabitsForUser(userId, updated);
+        habitStorage.saveHabitDataForUser(userId, newData);
+        return newData;
+      });
+
+      return updated;
+    });
+
+    // close modal if open
+    closeModal();
+  };
+
+  // Add-habit modal state
+  const [addOpen, setAddOpen] = useState(false);
+
+  const addHabit = (payload: { name: string; icon?: string; goal?: number }) => {
+    const { name, icon = '✅', goal = 30 } = payload;
+    // create new habit with unique id
+    setHabits(prev => {
+      const nextId = prev.length > 0 ? Math.max(...prev.map(h => h.id)) + 1 : 0;
+      const newHabit: Habit = { id: nextId, name, icon, goal };
+      const updated = [...prev, newHabit];
+
+      // persist habits
+      habitStorage.saveHabitsForUser(userId, updated);
+
+      // update habitData to add an empty row at the end
+      setHabitData(prevData => {
+        const newData: HabitData = { ...prevData };
+        newData[updated.length - 1] = new Array<number>(daysInMonth).fill(0);
+        habitStorage.saveHabitDataForUser(userId, newData);
+        return newData;
+      });
+
+      return updated;
+    });
+
+    setAddOpen(false);
+  };
+
   const closeModal = () => {
     setEditingId(null);
     setEditValue('');
@@ -239,12 +295,13 @@ const HabitTracker: React.FC = () => {
                 toggleHabit={toggleHabit}
                 onNameClick={onNameClick}
                 onNameDoubleClick={onNameDoubleClick}
+                onAddHabit={() => setAddOpen(true)}
               />
             </div>
 
 
             <div className="flex flex-col gap-4 rounded-3xl bg-white p-4">
-              <ProgressSummary dailyProgress={stats.dailyProgress} habitData={habitData} daysInMonth={daysInMonth} />
+              <ProgressSummary dailyProgress={stats.dailyProgress} habitData={habitData} daysInMonth={daysInMonth} onAddHabit={() => setAddOpen(true)} />
               <ProgressChart dailyProgress={stats.dailyProgress} />
             </div>
 
@@ -263,8 +320,10 @@ const HabitTracker: React.FC = () => {
           editValue={editValue}
           setEditValue={setEditValue}
           saveEdit={saveEdit}
+          deleteHabit={deleteHabit}
           closeModal={closeModal}
         />
+        <AddHabitModal open={addOpen} onCreate={addHabit} onClose={() => setAddOpen(false)} />
       </div>
     </div>
   );
