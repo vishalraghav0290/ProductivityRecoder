@@ -10,83 +10,105 @@ import {
   WeekSummary
 } from '../components/HabitTracker';
 import type { Habit, HabitData, Stats } from '../components/HabitTracker/types';
+import habitStorage from '../utils/habitStorage';
+import { getCurrentUser } from '../utils/auth';
 
 const HabitTracker: React.FC = () => {
-  const daysInMonth = 30;
+  // compute days in current month dynamically
+  const now = new Date();
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
   const daysOfWeek = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr'];
 
   // compute current month name dynamically
   const monthName = new Date().toLocaleString(undefined, { month: 'long' });
 
-  // Default dummy data to initialize localStorage
-  const defaultHabits: Habit[] = [
-    { id: 0, name: 'Wake up at 05:00', icon: '⏰', goal: 30 },
-    { id: 1, name: 'Gym', icon: '💪', goal: 30 },
-    { id: 2, name: 'Reading Learning', icon: '📚', goal: 30 },
-    { id: 3, name: 'Day Planning', icon: '📝', goal: 30 },
-    { id: 4, name: 'Budget Tracking', icon: '💰', goal: 30 },
-    { id: 5, name: 'Project Work', icon: '💼', goal: 30 },
-    { id: 6, name: 'No Alcohol', icon: '🚫', goal: 30 },
-    { id: 7, name: 'Social Media Detox', icon: '📱', goal: 30 },
-    { id: 8, name: 'Goal Journaling', icon: '📔', goal: 30 },
-    { id: 9, name: 'Cold Shower', icon: '🚿', goal: 30 }
-  ];
+  // Load per-user data from habitStorage; when no user (anon) we fall back to 'anon'
+  const currentUser = getCurrentUser();
+  const userId = currentUser?.id ?? 'anon';
 
-  const defaultHabitData: HabitData = {
-    0: [1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
-    1: [1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0],
-    2: [1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    3: [1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    4: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    5: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    6: [1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1],
-    7: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0],
-    8: [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    9: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  };
+  // Try to load persisted user-specific habits + data
+  const storedHabits = habitStorage.loadHabitsForUser(userId);
+  const storedData = habitStorage.loadHabitDataForUser(userId);
+  const meta = habitStorage.loadMetaForUser(userId);
 
-  // Initialize from localStorage or use defaults
+  // Initialize state with stored data or initialize a clean dataset for new users
   const [habits, setHabits] = useState<Habit[]>(() => {
-    const stored = localStorage.getItem('habitTracker_habits');
-    if (stored) {
-      return JSON.parse(stored);
-    }
-    // Initialize localStorage with default data
-    localStorage.setItem('habitTracker_habits', JSON.stringify(defaultHabits));
-    return defaultHabits;
+    if (storedHabits && Array.isArray(storedHabits)) return storedHabits;
+    const result = habitStorage.initializeUserData(userId, daysInMonth).habits;
+    return result;
   });
 
   const [habitData, setHabitData] = useState<HabitData>(() => {
-    const stored = localStorage.getItem('habitTracker_data');
-    if (stored) {
-      return JSON.parse(stored);
-    }
-    // Initialize localStorage with default data
-    localStorage.setItem('habitTracker_data', JSON.stringify(defaultHabitData));
-    return defaultHabitData;
+    if (storedData) return storedData;
+    return habitStorage.initializeUserData(userId, daysInMonth).data;
+  });
+
+  const [userMeta] = useState<{ createdAt: string } | null>(() => {
+    if (meta) return meta;
+    const m = { createdAt: new Date().toISOString() };
+    habitStorage.saveMetaForUser(userId, m);
+    return m;
   });
 
   // Save habits to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('habitTracker_habits', JSON.stringify(habits));
+    habitStorage.saveHabitsForUser(userId, habits);
   }, [habits]);
 
   // Save habitData to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('habitTracker_data', JSON.stringify(habitData));
+    habitStorage.saveHabitDataForUser(userId, habitData);
   }, [habitData]);
+
+  // meta is saved on initialization. If you need to update meta later, call
+  // habitStorage.saveMetaForUser(userId, { createdAt: ... }) directly.
 
   const moodData: Array<number | null> = [9, null, 4, null, 6, null, 9, null, 9, null, 7, null, 9, null, 8, null, 6, null, 6, null, 4, null, 7, null, 3, null, 7, null, 2, null, 5];
   const motivationData: Array<number | null> = [7, null, 8, null, 8, null, 8, null, null, null, null, null, 5, null, 5, null, 9, null, 7, null, 6, null, 7, null, 8, null, 5, null, 6, null, 8];
 
   const toggleHabit = (habitIndex: number, day: number) => {
+    const now = new Date();
+    const todayIndex = now.getDate() - 1; // zero-based index for arrays
+
+    // Disallow toggling future dates
+    if (day > todayIndex) {
+      // User attempted to mark a future date
+      alert('gogi beta masti nai');
+      return;
+    }
+
+    // Allow only today and yesterday
+    if (day < todayIndex - 1) {
+      alert('You can only mark today or yesterday');
+      return;
+    }
+
+    // Prevent toggling days earlier than the account creation date in the same month.
+    if (userMeta && userMeta.createdAt) {
+      const created = new Date(userMeta.createdAt);
+      const now2 = new Date();
+      if (created.getFullYear() === now2.getFullYear() && created.getMonth() === now2.getMonth()) {
+        const createdDay = created.getDate();
+        // day is zero-based index, createdDay is 1-based
+        if (day + 1 < createdDay) {
+          // Disallow toggling earlier than account creation
+          alert('Cannot edit before account creation');
+          return;
+        }
+      }
+    }
+
     setHabitData(prev => {
       const prevRow = prev[habitIndex] ?? new Array<number>(daysInMonth).fill(0);
       const newRow = prevRow.map((val, i) => (i === day ? (val ? 0 : 1) : val));
-      return {
+      const next = {
         ...prev,
         [habitIndex]: newRow
       };
+      // persist immediately via effect, but ensure we also persist here in case
+      // effect ordering changes
+      habitStorage.saveHabitDataForUser(userId, next);
+      return next;
     });
   };
 
@@ -206,7 +228,7 @@ const HabitTracker: React.FC = () => {
         <div className="tracker-flex">
           <div className=" flex flex-col p-6 gap-4 bg-gray-100">
             {/* week summary (visible on small screens) */}
-            <div className="flex w-full bg-white justify-center items-center rounded-2xl p-3">
+            <div className="flex w-full max-h-[80%] bg-white justify-center items-center rounded-2xl p-3  ">
               <WeekSummary dailyProgress={stats.dailyProgress} />
               <HabitsTable
                 habits={habits}

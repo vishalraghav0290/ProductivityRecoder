@@ -1,5 +1,6 @@
 import React from 'react';
 import focus from '../../../public/focus.png';
+import { Link } from 'react-router-dom';
 
 type Props = {
     userName?: string;
@@ -27,8 +28,9 @@ const Navbar: React.FC<Props> = ({
         }
         window.location.href = '/';
     };
+
     return (
-        <div className="w-full px-6 py-4 bg-white shadow-sm  flex items-center justify-between rounded-2xl">
+        <div className="w-full px-6 py-4 bg-white shadow-sm flex items-center justify-between rounded-2xl">
             <div className="flex items-center gap-4">
                 {/* breadcrumb */}
                 <nav className="text-sm text-gray-500 flex items-center gap-2 select-none">
@@ -57,14 +59,16 @@ const Navbar: React.FC<Props> = ({
                         <div className="text-xs text-gray-500">{userRole}</div>
                     </div>
 
-                    <div className="relative">
+                    {/* Use Link so navigation works without hooks and is accessible */}
+                    <Link to="/profile" aria-label="Open profile" className="relative">
                         <img
                             src={avatarUrl ?? 'https://avatars.githubusercontent.com/u/1?v=4'}
                             alt={userName}
                             className="w-10 h-10 rounded-full ring-2 ring-green-400 object-cover"
                         />
                         <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
-                    </div>
+                    </Link>
+
                     <button onClick={handleLogout} className="text-sm text-gray-600 hover:text-gray-900">Log out</button>
                 </div>
             </div>

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "289290b0-cdab-4349-bd51-e2d257838f23",
+    "name": "Smoke Tester",
+    "email": "smoke@example.com",
+    "password": "$2a$10$Ta0MYc1uADKpLMAEnsqDHuhaCldsh46S9.AHHxlPNHInL8FTlh0Ga"
+  },
+  {
+    "id": "32aadb96-ff58-475a-a923-6ccc038dffec",
+    "name": "vishal raghav ",
+    "email": "vishalraghav0289@gmail.com",
+    "password": "$2a$10$04VvQSrK3fNtno.djOWivOXyLauW5wr0KfeUA/zqOxbXSEm1cK8Kq"
+  }
+]

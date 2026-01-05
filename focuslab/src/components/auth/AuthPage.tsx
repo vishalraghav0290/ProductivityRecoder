@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { loginUser } from '../../utils/auth';
+
+// NOTE: This page currently talks to a local development server at http://localhost:4000
+// Make sure the server is running (see server/README or `server/index.js`).
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,9 +15,43 @@ export default function AuthPage() {
     confirmPassword: ''
   });
 
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData);
-    alert(isLogin ? 'Login successful!' : 'Account created successfully!');
+  // Handle login or signup by calling the backend auth endpoints. On success store
+  // the issued JWT and minimal user info in localStorage using loginUser().
+  const handleSubmit = async () => {
+    const base = (import.meta.env.VITE_AUTH_URL as string) || 'http://localhost:4000';
+    try {
+      if (isLogin) {
+        const res = await fetch(`${base}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email, password: formData.password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.message || 'Login failed');
+        // store token and user info
+        loginUser(data.token, data.user);
+        // SPA navigation: navigate to home
+        window.location.href = '/';
+      } else {
+        // Signup
+        if (formData.password !== formData.confirmPassword) {
+          alert('Passwords do not match');
+          return;
+        }
+        const res = await fetch(`${base}/api/auth/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: formData.name, email: formData.email, password: formData.password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.message || 'Signup failed');
+        alert('Account created — please sign in');
+        setIsLogin(true);
+      }
+    } catch (err: any) {
+      console.error(err);
+      alert(err?.message || 'Auth error');
+    }
   };
 
   const handleChange = (e:any) => {
