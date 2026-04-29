@@ -273,8 +273,8 @@ const HabitTracker: React.FC = () => {
   // ---------------------------------------------------------------------
 
   return (
-    <div className="flex  min-h-screen bg-gray-100 p-4 justify-center items-center ">
-      <div className="flex flex-col w-[95%] mx-auto bg-gray-100  shadow-lg rounded-4xl">
+    <div className="flex min-h-screen bg-gray-100 px-3 py-4 sm:px-4 sm:py-6">
+      <div className="flex flex-col w-full max-w-6xl mx-auto gap-4">
         <Header
           habitsCount={habits.length}
           totalCompleted={stats.totalCompleted}
@@ -283,35 +283,80 @@ const HabitTracker: React.FC = () => {
         />
 
         <div className="tracker-flex">
-          <div className=" flex flex-col p-6 gap-4 bg-gray-100">
-            {/* week summary (visible on small screens) */}
-            <div className="flex w-full max-h-[80%] bg-white justify-center items-center rounded-2xl p-3  ">
-              <WeekSummary dailyProgress={stats.dailyProgress} />
-              <HabitsTable
-                habits={habits}
-                daysInMonth={daysInMonth}
-                getDayOfWeek={getDayOfWeek}
-                renderWeekHeader={renderWeekHeader}
-                habitData={habitData}
-                toggleHabit={toggleHabit}
-                onNameClick={onNameClick}
-                onNameDoubleClick={onNameDoubleClick}
-                onAddHabit={() => setAddOpen(true)}
-              />
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col w-full bg-white justify-center items-stretch rounded-2xl p-3 sm:p-4 shadow-sm border border-gray-100 gap-3">
+              <div className="hidden sm:block">
+                <WeekSummary dailyProgress={stats.dailyProgress} />
+              </div>
+              <div className="w-full overflow-x-auto">
+                <HabitsTable
+                  habits={habits}
+                  daysInMonth={daysInMonth}
+                  getDayOfWeek={getDayOfWeek}
+                  renderWeekHeader={renderWeekHeader}
+                  habitData={habitData}
+                  toggleHabit={toggleHabit}
+                  onNameClick={onNameClick}
+                  onNameDoubleClick={onNameDoubleClick}
+                  onAddHabit={() => setAddOpen(true)}
+                />
+              </div>
             </div>
 
+            {/* Mobile-only Analysis (shown before Progress to match design) */}
+            <div className="lg:hidden">
+              <AnalysisSidebar stats={stats} />
+            </div>
 
-            <div className="flex flex-col gap-4 rounded-3xl bg-white p-4">
-              <ProgressSummary dailyProgress={stats.dailyProgress} habitData={habitData} daysInMonth={daysInMonth} onAddHabit={() => setAddOpen(true)} />
+            <div className="hidden md:flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-sm border border-gray-100">
+              <ProgressSummary
+                dailyProgress={stats.dailyProgress}
+                habitData={habitData}
+                daysInMonth={daysInMonth}
+                onAddHabit={() => setAddOpen(true)}
+              />
               <ProgressChart dailyProgress={stats.dailyProgress} />
             </div>
 
-            <div className="flex flex-col gap-4 rounded-3xl bg-white p-4">
+            <details className="md:hidden bg-white rounded-2xl shadow-sm border border-gray-100">
+              <summary className="cursor-pointer select-none px-4 py-3 text-sm font-semibold text-gray-800 flex items-center justify-between">
+                <span>Progress</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-4 pb-4">
+                <ProgressSummary
+                  dailyProgress={stats.dailyProgress}
+                  habitData={habitData}
+                  daysInMonth={daysInMonth}
+                  onAddHabit={() => setAddOpen(true)}
+                />
+                <ProgressChart dailyProgress={stats.dailyProgress} />
+              </div>
+            </details>
+
+            {/* Mental State - desktop card */}
+            <div className="hidden md:flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-sm border border-gray-100">
               <MentalState moodData={moodData} motivationData={motivationData} />
             </div>
+
+            {/* Mental State - mobile accordion */}
+            <details className="md:hidden bg-white rounded-2xl shadow-sm border border-gray-100">
+              <summary className="cursor-pointer select-none px-4 py-3 text-sm font-semibold text-gray-800 flex items-center justify-between">
+                <span>Mental State</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-4 pb-4">
+                <MentalState moodData={moodData} motivationData={motivationData} />
+              </div>
+            </details>
           </div>
 
-          <div className=" w-[20%]">
+          {/* Desktop sidebar */}
+          <div className="hidden lg:block w-full lg:w-[22%]">
             <AnalysisSidebar stats={stats} />
           </div>
         </div>

@@ -10,6 +10,7 @@ type Props = {
     showNotification?: boolean;
     onNotificationClick?: () => void;
     onLogout?: () => void;
+    onMenuClick?: () => void;
 };
 
 const Navbar: React.FC<Props> = ({
@@ -18,14 +19,14 @@ const Navbar: React.FC<Props> = ({
     avatarUrl,
     showNotification = true,
     onNotificationClick,
-    onLogout
+    onLogout,
+    onMenuClick
 }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
         if (onLogout) return onLogout();
         try {
-            // ensure token and user cleared
             logoutUser();
         } catch {
             // ignore
@@ -34,16 +35,27 @@ const Navbar: React.FC<Props> = ({
     };
 
     return (
-        <div className="w-full px-6 py-4 bg-white shadow-sm flex items-center justify-between rounded-2xl">
-            <div className="flex items-center gap-4">
+        <div className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white shadow-sm flex items-center justify-between rounded-2xl">
+            <div className="flex items-center gap-2 sm:gap-4">
+                {/* Hamburger - mobile only */}
+                <button
+                    onClick={onMenuClick}
+                    aria-label="Menu"
+                    className="md:hidden p-1 text-gray-700 hover:bg-gray-100 rounded-md"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
                 {/* breadcrumb */}
-                <nav className="text-sm text-gray-500 flex items-center gap-2 select-none" onClick={() => navigate('/habbitable')}>
-                    <img src={focus} alt="Focus Labs" className="h-8 w-auto" />
-                    <div className="font-Audiowide font-900 text-2xl">Focus Labs</div>
+                <nav className="text-sm text-gray-500 flex items-center gap-2 select-none cursor-pointer" onClick={() => navigate('/habbitable')}>
+                    <img src={focus} alt="Focus Labs" className="hidden sm:block h-8 w-auto" />
+                    <div className="font-Audiowide font-900 text-lg sm:text-2xl">Focus Labs</div>
                 </nav>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
                 {showNotification && (
                     <button
                         onClick={onNotificationClick}
@@ -58,22 +70,23 @@ const Navbar: React.FC<Props> = ({
                 )}
 
                 <div className="flex items-center gap-3">
-                    <div className="flex flex-col text-right leading-tight">
+                    {/* User text - hidden on mobile */}
+                    <div className="hidden md:flex flex-col text-right leading-tight">
                         <div className="text-sm font-medium text-gray-800">{userName}</div>
                         <div className="text-xs text-gray-500">{userRole}</div>
                     </div>
 
-                    {/* Use Link so navigation works without hooks and is accessible */}
                     <Link to="/profile" aria-label="Open profile" className="relative">
                         <img
                             src={avatarUrl ?? 'https://avatars.githubusercontent.com/u/1?v=4'}
                             alt={userName}
-                            className="w-10 h-10 rounded-full ring-2 ring-green-400 object-cover"
+                            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full ring-2 ring-green-400 object-cover"
                         />
                         <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white" />
                     </Link>
 
-                    <button onClick={handleLogout} className="text-sm text-gray-600 hover:text-gray-900">Log out</button>
+                    {/* Logout - hidden on mobile */}
+                    <button onClick={handleLogout} className="hidden md:block text-sm text-gray-600 hover:text-gray-900">Log out</button>
                 </div>
             </div>
         </div>

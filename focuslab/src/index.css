@@ -32,3 +32,12 @@ html, body, #root {
 	.week-summary { display: block; }
 	.desktop-week-data { display: none; }
 }
+
+/* Hide native <summary> disclosure marker so custom chevrons render alone */
+summary { list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary::marker { content: ""; }
+
+/* Rotate chevron when <details> is open */
+details[open] > summary > svg { transform: rotate(180deg); }
+summary > svg { transition: transform 0.2s ease; }
