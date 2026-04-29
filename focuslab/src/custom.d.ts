@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-explicit-any */
 // Allow importing .jsx files without TypeScript complaints
 declare module '*.jsx' {
   import React = require('react');

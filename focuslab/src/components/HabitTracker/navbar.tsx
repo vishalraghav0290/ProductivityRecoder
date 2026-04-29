@@ -27,7 +27,7 @@ const Navbar: React.FC<Props> = ({
         try {
             // ensure token and user cleared
             logoutUser();
-        } catch (e) {
+        } catch {
             // ignore
         }
         navigate('/login');

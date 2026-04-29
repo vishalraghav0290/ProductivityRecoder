@@ -18,7 +18,7 @@ const ProgressChart: React.FC<Props> = ({ dailyProgress }) => {
             </linearGradient>
           </defs>
           <Area type="monotone" dataKey="progress" stroke="#82ca9d" fill="url(#colorProgress)" />
-          <YAxis domain={[0, 100]} ticks={[20, 40, 60]} tickFormatter={(v: any) => `${v}%`} />
+          <YAxis domain={[0, 100]} ticks={[20, 40, 60]} tickFormatter={(v: number) => `${v}%`} />
         </AreaChart>
       </ResponsiveContainer>
     </div>

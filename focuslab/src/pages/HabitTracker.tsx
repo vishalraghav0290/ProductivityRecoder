@@ -54,12 +54,12 @@ const HabitTracker: React.FC = () => {
   // Save habits to localStorage whenever they change
   useEffect(() => {
     habitStorage.saveHabitsForUser(userId, habits);
-  }, [habits]);
+  }, [habits, userId]);
 
   // Save habitData to localStorage whenever it changes
   useEffect(() => {
     habitStorage.saveHabitDataForUser(userId, habitData);
-  }, [habitData]);
+  }, [habitData, userId]);
 
   // meta is saved on initialization. If you need to update meta later, call
   // habitStorage.saveMetaForUser(userId, { createdAt: ... }) directly.
@@ -152,7 +152,7 @@ const HabitTracker: React.FC = () => {
       dailyProgress,
       habitStats
     };
-  }, [habitData, habits.length]);
+  }, [habitData, habits, daysInMonth]);
 
   const renderWeekHeader = (weekNum: number) => {
     const weeks = [
@@ -176,6 +176,7 @@ const HabitTracker: React.FC = () => {
   const [editValue, setEditValue] = useState<string>('');
 
   const onNameClick = (_habitId: number) => {
+    void _habitId;
     // start a timer for single-click action
     if (clickTimer.current) {
       window.clearTimeout(clickTimer.current);

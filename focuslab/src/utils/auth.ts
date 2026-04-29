@@ -1,75 +1,126 @@
 /**
- * Frontend auth utilities for storing JWT and user info in localStorage.
+ * Frontend-only auth utilities using localStorage.
  *
- * Exports:
- * - loginUser(token, user) -> stores token and user in localStorage
- * - logoutUser() -> clears auth keys from localStorage
- * - getCurrentUser() -> returns stored user or null
- * - getToken() -> returns stored token or null
- * - isAuthenticated() -> checks token presence and expiry
- *
- * Note: In production you should store tokens carefully (httpOnly cookies are safer),
- * and verify tokens server-side where needed. These helpers are written for a SPA
- * that uses a backend JWT auth API.
+ * Stores users and current session locally:
+ * - USERS_KEY: array of registered users (email + password)
+ * - CURRENT_USER_KEY: the active logged-in user (without password)
  */
 
-const TOKEN_KEY = 'focuslab_token';
-const USER_KEY = 'focuslab_current_user';
+type StoredUser = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: string;
+};
 
-export function loginUser(token: string, user: { id: string; name: string; email: string }) {
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
-}
+export type PublicUser = Omit<StoredUser, 'password'>;
 
-export function logoutUser() {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
-}
+const USERS_KEY = 'focuslab_users';
+const CURRENT_USER_KEY = 'focuslab_current_user';
 
-export function getToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY);
-}
-
-export function getCurrentUser(): { id: string; name: string; email: string } | null {
-  const raw = localStorage.getItem(USER_KEY);
+function safeParse<T>(raw: string | null): T | null {
   if (!raw) return null;
   try {
-    return JSON.parse(raw);
-  } catch (e) {
+    return JSON.parse(raw) as T;
+  } catch {
     return null;
   }
 }
 
-// Lightweight JWT expiry check: decode payload and check exp claim.
-function parseJwt(token: string) {
-  try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
-    return payload;
-  } catch (e) {
-    return null;
+function createId() {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
   }
+  return `u_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+}
+
+export function loadUsers(): StoredUser[] {
+  return safeParse<StoredUser[]>(localStorage.getItem(USERS_KEY)) ?? [];
+}
+
+export function saveUsers(users: StoredUser[]) {
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+export function setCurrentUser(user: PublicUser | null) {
+  if (!user) {
+    localStorage.removeItem(CURRENT_USER_KEY);
+  } else {
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+  }
+}
+
+export function getCurrentUser(): PublicUser | null {
+  return safeParse<PublicUser>(localStorage.getItem(CURRENT_USER_KEY));
 }
 
 export function isAuthenticated(): boolean {
-  const token = getToken();
-  if (!token) return false;
-  const payload = parseJwt(token);
-  if (!payload) return false;
-  if (payload.exp && typeof payload.exp === 'number') {
-    // exp is in seconds since epoch
-    const now = Math.floor(Date.now() / 1000);
-    return payload.exp > now;
+  return !!getCurrentUser();
+}
+
+export function logoutUser() {
+  setCurrentUser(null);
+}
+
+export function registerUser(payload: { name: string; email: string; password: string }) {
+  const name = payload.name.trim();
+  const email = payload.email.trim().toLowerCase();
+  const password = payload.password;
+
+  if (!name || !email || !password) {
+    return { ok: false, message: 'All fields are required.' };
   }
-  // if no exp claim, consider token valid (not ideal)
-  return true;
+
+  const users = loadUsers();
+  const exists = users.find(u => u.email === email);
+  if (exists) {
+    return { ok: false, message: 'User already exists.' };
+  }
+
+  const user: StoredUser = {
+    id: createId(),
+    name,
+    email,
+    password,
+    createdAt: new Date().toISOString(),
+  };
+
+  users.push(user);
+  saveUsers(users);
+
+  return {
+    ok: true,
+    user: { id: user.id, name: user.name, email: user.email, createdAt: user.createdAt }
+  };
+}
+
+export function loginUser(email: string, password: string) {
+  const e = email.trim().toLowerCase();
+  const p = password;
+
+  if (!e || !p) {
+    return { ok: false, message: 'Email and password are required.' };
+  }
+
+  const users = loadUsers();
+  const user = users.find(u => u.email === e && u.password === p);
+  if (!user) {
+    return { ok: false, message: 'Invalid email or password.' };
+  }
+
+  const publicUser = { id: user.id, name: user.name, email: user.email, createdAt: user.createdAt };
+  setCurrentUser(publicUser);
+  return { ok: true, user: publicUser };
 }
 
 export default {
-  loginUser,
-  logoutUser,
+  loadUsers,
+  saveUsers,
+  setCurrentUser,
   getCurrentUser,
-  getToken,
   isAuthenticated,
+  logoutUser,
+  registerUser,
+  loginUser,
 };

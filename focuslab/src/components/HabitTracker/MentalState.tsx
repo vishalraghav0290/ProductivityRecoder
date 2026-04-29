@@ -37,7 +37,7 @@ const MentalState: React.FC<Props> = ({ moodData, motivationData }) => {
               </linearGradient>
             </defs>
             <Area type="monotone" dataKey="mood" stroke="#c084fc" fill="url(#colorMood)" />
-            <YAxis domain={[0, 10]} ticks={[2.5, 5, 7.5]} tickFormatter={(v: any) => `${Math.round(v * 10)}%`} />
+            <YAxis domain={[0, 10]} ticks={[2.5, 5, 7.5]} tickFormatter={(v: number) => `${Math.round(v * 10)}%`} />
           </AreaChart>
         </ResponsiveContainer>
       </div>

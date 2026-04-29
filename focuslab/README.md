@@ -10,6 +10,7 @@ Key features
 - Visualize daily aggregated progress with area charts (uses `recharts`).
 - View simple mood & motivation timelines.
 - Edit habit names in an inline modal.
+- Frontend-only auth (signup/login) using localStorage with protected routes.
 
 Tech stack
 - React 19 + TypeScript
@@ -45,6 +46,9 @@ Project layout (important files)
   - `AnalysisSidebar.tsx` — right-side habit goals/actual/progress bars
   - `EditModal.tsx` — modal to edit a habit name
   - `types.ts` — shared TypeScript types for the components
+- `src/context/AuthContext.tsx` — auth state provider (localStorage-based)
+- `src/routes/AppRoutes.tsx` — route setup with protected routes
+- `src/pages/Login.tsx` and `src/pages/Signup.tsx` — auth screens
 
 Notes about design decisions
 - The container (`src/pages/HabitTracker.tsx`) was kept as the single source of truth for state and business logic. The UI pieces are split into presentational components to keep them small and reusable.

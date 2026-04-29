@@ -1,14 +1,1 @@
-[
-  {
-    "id": "294b4629-43fb-45ad-aee3-a666c0b41888",
-    "name": "Smoke User",
-    "email": "smoke+user@example.com",
-    "password": "$2a$10$sGH8Y4m7iIXhjIVA1JPovebKYlOI3rQZmVSYhook0yukoaSiCHMyO"
-  },
-  {
-    "id": "3dac4bce-b970-489d-b436-1e4404364f4b",
-    "name": "vishal raghav ",
-    "email": "vishalraghav0289@gmail.com",
-    "password": "$2a$10$sc6icVZtyG9mptC0BAnbh.63YIUPMerPh7d9HuTbvN3gUksIEPoG2"
-  }
-]
+[]
